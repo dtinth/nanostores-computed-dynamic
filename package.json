@@ -1,0 +1,33 @@
+{
+  "name": "nanostores-computed-dynamic",
+  "version": "0.1.0",
+  "description": "Computed stores with dynamic dependencies for nanostores",
+  "author": "Thai Pangsakulyanont <dtinth@spacet.me>",
+  "sideEffects": false,
+  "license": "MIT",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.0",
+    "nanostores": "^0.9.2",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.5",
+    "vitest": "^0.32.2"
+  },
+  "peerDependencies": {
+    "nanostores": "^0.9.2"
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "tsup src/index.ts --dts --format esm",
+    "prepare": "pnpm build"
+  }
+}
