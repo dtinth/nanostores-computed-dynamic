@@ -25,7 +25,11 @@ export function computedDynamic<TValue>(
   const update = () => {
     if (dependenciesHaveChanged()) {
       const newDependencyCache = new Map<ReadableAtom<any>, any>()
+      let tooLate = false
       const newValue = logic((store) => {
+        if (tooLate) {
+          throw new TooLateError()
+        }
         if (newDependencyCache.has(store)) {
           return newDependencyCache.get(store)
         }
@@ -33,6 +37,7 @@ export function computedDynamic<TValue>(
         newDependencyCache.set(store, value)
         return value
       })
+      tooLate = true
       dependencyCache = newDependencyCache
       updateListeners()
       derived.set(newValue)
@@ -74,4 +79,13 @@ export function computedDynamic<TValue>(
   })
 
   return derived
+}
+
+export class TooLateError extends Error {
+  constructor() {
+    super(
+      'You can only call `use` synchronously inside the `computedDynamic` callback.',
+    )
+    this.name = 'TooLateError'
+  }
 }

@@ -103,3 +103,12 @@ it('works with a store of store', () => {
     unsubscribe()
   }
 })
+
+it('prevents calling use() outside of the logic function', () => {
+  const a = atom(1)
+  const b = computedDynamic((use) => {
+    return () => use(a)
+  })
+  const f = b.get()
+  expect(() => f()).toThrow()
+})
